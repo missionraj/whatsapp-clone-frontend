@@ -20,7 +20,6 @@ const Chat = ({messages}) => {
             }
         )
         setInput("");
-
     }
     return (
         <div className="chat">

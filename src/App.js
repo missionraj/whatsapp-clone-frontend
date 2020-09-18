@@ -4,15 +4,17 @@ import Sidebar from './Sidebar/Sidebar';
 import Chat from './Chat/Chat';
 import Pusher from "pusher-js";
 import axios from './axios';
+import Login from './Login/Login';
+
+import { useDataLayerValue } from './stateProvider'
 function App() {
   
   const [ messages,setMessages ] = useState([]);
+  const [ { user },dispatch] = useDataLayerValue();
   useEffect(()=>{
-
     axios.get('/api/message/sync').then(response => {
       setMessages(response.data);
     })
-
   },[]);
 
   useEffect(() => {
@@ -32,13 +34,22 @@ function App() {
   }, [messages])
 
   return (
-    <div className="app">
-      <div className="app__body"> 
-        <Sidebar />
-        <Chat messages={messages} />
-      </div>
-
-    </div>
+      <>
+      {
+        user ? (     
+          <div className="app">
+            <div className="app__body"> 
+              <Sidebar />
+              <Chat messages={messages} />
+            </div>
+          </div>
+        ):(
+          <Login /> 
+        )
+      }
+      </>
+      
+    
   );
 }
 

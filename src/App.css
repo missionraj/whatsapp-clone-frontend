@@ -1,8 +1,9 @@
-.app{ 
+.app { 
   display: grid;
   place-items: center;
   height: 100vh;
   background-color: #ededed;
+
 }
 .app__body{
   display: flex;
@@ -10,7 +11,7 @@
   margin-top: -50px;
   height: 90vh;
   width: 90vw;
-  -webkit-box-shadow: 0px 4px 33px 0px rgba(0,0,0,0.75);
-  -moz-box-shadow: 0px 4px 33px 0px rgba(0,0,0,0.75);
-  box-shadow: 0px 4px 33px 0px rgba(0,0,0,0.75);
+  -webkit-box-shadow: 0 17px 50px 0 rgba(0,0,0,.19), 0 12px 15px 0 rgba(0,0,0,.24);
+  -moz-box-shadow: 0 17px 50px 0 rgba(0,0,0,.19), 0 12px 15px 0 rgba(0,0,0,.24);
+  box-shadow: 0 17px 50px 0 rgba(0,0,0,.19), 0 12px 15px 0 rgba(0,0,0,.24);
 }
