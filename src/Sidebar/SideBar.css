@@ -2,7 +2,9 @@
     display: flex;
     flex-direction: column;
     flex : 0.35;
+    position: relative;
 }
+
 .sidebar__header{
     display: flex;
     justify-content: space-between;
@@ -48,4 +50,24 @@
     flex: 1;
     background-color: #fff;
     overflow: scroll;
+}
+.sidebar__chats::-webkit-scrollbar {
+    display: none;
+}
+.sidebar__headerRightOptions {
+    padding: 10px;  
+    cursor: pointer;
+    font-size: 14px;
+}
+.sidebar__headerRightOptions:hover {
+    background-color: #ebebeb;
+}
+.sidebar__navigation{ 
+    height: 100%;
+    position: absolute;
+    background:#fff;
+    width: 100%;
+    margin-left: -100%;
+    transition: 0.5s;
+    z-index: 10;
 }

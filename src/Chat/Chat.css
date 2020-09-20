@@ -21,6 +21,9 @@
     padding: 30px;
     overflow: scroll;
 }
+.chat__body::-webkit-scrollbar {
+    display: none;
+}
 .chat__message{ 
     position: relative;
     font-size: 16px;

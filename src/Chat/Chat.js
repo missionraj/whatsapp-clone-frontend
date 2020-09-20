@@ -22,6 +22,7 @@ const Chat = ({messages}) => {
         setInput("");
     }
     return (
+        <>
         <div className="chat">
             <div className="chat__header">
                 <Avatar />
@@ -61,7 +62,9 @@ const Chat = ({messages}) => {
                 </form>
                 <MicIcon />
             </div>
+            
         </div>
+        </>
     )
 }
 

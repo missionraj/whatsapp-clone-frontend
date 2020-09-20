@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import './SideBar.css'
 import DonutLargeIcon from '@material-ui/icons/DonutLarge';
 import ChatIcon from '@material-ui/icons/Chat';
@@ -6,7 +6,38 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import SearchIcon from '@material-ui/icons/Search';
 import { IconButton, Avatar } from '@material-ui/core';
 import SideBarChat from '../SideBarChat/SideBarChat';
+
+import Popover from '@material-ui/core/Popover';
+import { withStyles } from '@material-ui/core/styles';
+
+// The `withStyles()` higher-order component is injecting a `classes`
+// prop that is used by the `Button` component.
+const StyledPopover = withStyles({
+    paper: {
+        boxShadow:'0px 5px 5px -3px rgba(170, 170, 170, 0.2),0px 5px 5px 1px rgba(198, 197, 197, 0.14),0px 3px 14px 2px rgba(189, 189, 189, 0.12)',
+        padding:'10px 0' 
+    }
+})(Popover);
+
 const Sidebar = () => {
+    
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const creatGroupNav = useRef();
+
+    const handleClick = (event) => {
+      setAnchorEl(event.currentTarget);
+    };
+    
+    const handleClose = () => {
+      setAnchorEl(null);
+    };
+  
+    const navigationGroupCreator = () => {
+        creatGroupNav.current.style.marginLeft = 0;
+    }
+    const open = Boolean(anchorEl);
+    const id = open ? 'simple-popover' : undefined;
+
     return (
         <div className="sidebar">
             <div className="sidebar__header"> 
@@ -19,8 +50,25 @@ const Sidebar = () => {
                         <ChatIcon />
                     </IconButton>
                     <IconButton>
-                        <MoreVertIcon />
+                        <MoreVertIcon  onClick={handleClick} />
                     </IconButton>
+                    <StyledPopover
+                        id={id}
+                        open={open}
+                        anchorEl={anchorEl}
+                        onClose={handleClose}
+                        anchorOrigin={{
+                            vertical: 'bottom',
+                            horizontal: 'center',
+                        }}
+                        transformOrigin={{
+                            vertical: 'top',
+                            horizontal: 'right',
+                        }}
+                    >
+                       <div className="sidebar__headerRightOptions" onClick={navigationGroupCreator} > create a group </div>
+                       <div className="sidebar__headerRightOptions"> Logout </div>
+                    </StyledPopover>
                 </div>
             </div>
             <div className="sidebar__search"> 
@@ -34,6 +82,7 @@ const Sidebar = () => {
                 <SideBarChat />
                 <SideBarChat />
             </div>
+            <div className="sidebar__navigation" ref={creatGroupNav} > this is the side bar ... </div>
         </div>
     )
 }

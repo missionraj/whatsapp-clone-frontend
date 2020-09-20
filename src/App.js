@@ -34,22 +34,13 @@ function App() {
   }, [messages])
 
   return (
-      <>
-      {
-        user ? (     
-          <div className="app">
-            <div className="app__body"> 
-              <Sidebar />
-              <Chat messages={messages} />
-            </div>
+        <div className="app">
+          <div className="app__body"> 
+            <Sidebar />
+            <Chat messages={messages} />
           </div>
-        ):(
-          <Login /> 
-        )
-      }
-      </>
-      
-    
+        </div>
+        // <Login /> 
   );
 }
 
