@@ -9,7 +9,9 @@ import SideBarChat from '../SideBarChat/SideBarChat';
 
 import Popover from '@material-ui/core/Popover';
 import { withStyles } from '@material-ui/core/styles';
-
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import AddAPhotoIcon from '@material-ui/icons/AddAPhoto';
+import TextField from '@material-ui/core/TextField';
 // The `withStyles()` higher-order component is injecting a `classes`
 // prop that is used by the `Button` component.
 const StyledPopover = withStyles({
@@ -18,6 +20,7 @@ const StyledPopover = withStyles({
         padding:'10px 0' 
     }
 })(Popover);
+ 
 
 const Sidebar = () => {
     
@@ -34,6 +37,11 @@ const Sidebar = () => {
   
     const navigationGroupCreator = () => {
         creatGroupNav.current.style.marginLeft = 0;
+        setAnchorEl(null);
+    }
+
+    const closeNavigationGroupCreator = () => {
+        creatGroupNav.current.style.marginLeft = '-100%';
     }
     const open = Boolean(anchorEl);
     const id = open ? 'simple-popover' : undefined;
@@ -82,7 +90,25 @@ const Sidebar = () => {
                 <SideBarChat />
                 <SideBarChat />
             </div>
-            <div className="sidebar__navigation" ref={creatGroupNav} > this is the side bar ... </div>
+            <div className="sidebar__navigation" ref={creatGroupNav} >
+                <div className="sidebar__navigationHeader"> 
+                    <div className="sidebar__navigationHeaderTitle"> 
+                        <ArrowBackIcon  onClick={closeNavigationGroupCreator} />
+                        <p> Add new group </p>
+                    </div> 
+                </div>
+                <div className="sidebar__navigationHeaderIconWrapper">
+                    <div className="sidebar__navigationHeaderImageWrapper">
+                        <AddAPhotoIcon />
+                        <div> 
+                            ADD GROUP ICON
+                        </div>
+                    </div>
+                </div> 
+                <div className="sidebar__navigationInputWrapper" >
+                        <TextField  label="Standard" fullWidth={true} />
+                </div>
+            </div>
         </div>
     )
 }

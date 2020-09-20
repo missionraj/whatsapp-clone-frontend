@@ -70,4 +70,53 @@
     margin-left: -100%;
     transition: 0.5s;
     z-index: 10;
+    display: flex;
+    flex-direction: column;
+}
+.sidebar__navigationHeader{
+    background: #00bfa5;
+    height: 108px;
+    display: flex;
+    align-items: center;
+}
+
+.sidebar__navigationHeaderTitle {
+	color: #fff;
+	display: flex;
+	padding: 10px;
+	width: 100%;
+	align-items: center;
+}
+
+.sidebar__navigationHeaderTitle > p { 
+    margin-left: 15px;
+    font-size: 19px;
+    font-weight: 500;
+}
+
+.sidebar__navigationHeaderIconWrapper {
+	display: grid;
+    place-items: center;
+    padding: 20px;
+}
+.sidebar__navigationHeaderImageWrapper {
+	height: 200px;
+	width: 200px;
+	border-radius: 50%;
+	background-image: url(https://www.iconfinder.com/data/icons/user-outline-icons-set/144/User_Group-512.png);
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: contain;
+	background-color: #b0b0b0;
+	color: #fff;
+	display: flex;
+	align-items: center;
+    justify-content: space-evenly;
+    cursor: pointer;
+}
+.sidebar__navigationInputWrapper {
+    padding: 10px;
+}
+.sidebar__navigationInputWrapper > .MuiFormControl-root:focus{
+    border-bottom: 1px solid red;
 }
