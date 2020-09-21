@@ -12,7 +12,7 @@ import { withStyles } from '@material-ui/core/styles';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import AddAPhotoIcon from '@material-ui/icons/AddAPhoto';
 import TextField from '@material-ui/core/TextField';
-
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import firebaseApp from '../firebase';
 
 // The `withStyles()` higher-order component is injecting a `classes`
@@ -23,7 +23,17 @@ const StyledPopover = withStyles({
         padding:'10px 0' 
     }
 })(Popover);
- 
+
+const CssTextField = withStyles({
+    root: {
+      '& label.Mui-focused': {
+        color: 'black',
+      },
+      '& .MuiInput-underline:after': {
+        borderBottomColor: '#00bfa5',
+      },
+    },
+  })(TextField);
 
 const Sidebar = () => {
     
@@ -35,7 +45,9 @@ const Sidebar = () => {
             backgroundRepeat: 'no-repeat',
             backgroundPosition: 'center',
             backgroundSize: 'cover'
-    })
+    });
+
+    const [ groupName, setGroupName ] = useState('');
     const handleClick = (event) => {
       setAnchorEl(event.currentTarget);
     };
@@ -87,6 +99,11 @@ const Sidebar = () => {
                     });
                 }
         )
+    }
+
+    const handleGroupName = (e)=> { 
+        // console.log('this is called when event target ....',e.target.value);
+        setGroupName(e.target.value);
     }
     const open = Boolean(anchorEl);
     const id = open ? 'simple-popover' : undefined;
@@ -152,8 +169,11 @@ const Sidebar = () => {
                     <input type="file"  style={{display:'none'}} ref={fileUpload}  onChange={(e)=> handleFileUpload(e)}/>
                 </div> 
                 <div className="sidebar__navigationInputWrapper" >
-                    <TextField  label="Standard" fullWidth={true} />
+                    <CssTextField  label="Group Subject" fullWidth={true}  onChange={(e)=>{handleGroupName(e)}} />
                 </div>
+                <div className="sidebar__navigationCreateGroupWrapper">
+                    <img src="https://freeiconshop.com/wp-content/uploads/edd/checkmark-flat.png" height="50" width="50"/>
+                </div> 
             </div>
         </div>
     )

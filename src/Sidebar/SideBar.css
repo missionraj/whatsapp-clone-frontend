@@ -113,6 +113,10 @@
 .sidebar__navigationInputWrapper {
     padding: 10px;
 }
-.sidebar__navigationInputWrapper > .MuiFormControl-root:focus{
-    border-bottom: 1px solid red;
+.sidebar__navigationCreateGroupWrapper{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 15px;
 }
+
