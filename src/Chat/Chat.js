@@ -43,7 +43,7 @@ const Chat = ({messages}) => {
             <div className="chat__body">
                 {
                     messages.map(message=>(
-                        <p className={`chat__message ${message.recieved ? 'chat__reciever' : '' }`} >
+                        <p className={`chat__message ${message.recieved ? 'chat__reciever' : '' }`} key={message._id}>
                             <span className="chat__name"> {message.name} </span>
                                 { message.message }
                             <span className="chat__timeStamp"> 

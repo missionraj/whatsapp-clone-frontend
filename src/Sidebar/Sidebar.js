@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useRef, useState } from 'react'
 import './SideBar.css'
 import DonutLargeIcon from '@material-ui/icons/DonutLarge';
 import ChatIcon from '@material-ui/icons/Chat';
@@ -12,6 +12,9 @@ import { withStyles } from '@material-ui/core/styles';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import AddAPhotoIcon from '@material-ui/icons/AddAPhoto';
 import TextField from '@material-ui/core/TextField';
+
+import firebaseApp from '../firebase';
+
 // The `withStyles()` higher-order component is injecting a `classes`
 // prop that is used by the `Button` component.
 const StyledPopover = withStyles({
@@ -26,7 +29,13 @@ const Sidebar = () => {
     
     const [anchorEl, setAnchorEl] = React.useState(null);
     const creatGroupNav = useRef();
-
+    const fileUpload = useRef(null);
+    const [groupImage,setGroupImage] = useState({
+            backgroundImage: 'url(https://www.iconfinder.com/data/icons/user-outline-icons-set/144/User_Group-512.png)',
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'center',
+            backgroundSize: 'cover'
+    })
     const handleClick = (event) => {
       setAnchorEl(event.currentTarget);
     };
@@ -43,6 +52,42 @@ const Sidebar = () => {
     const closeNavigationGroupCreator = () => {
         creatGroupNav.current.style.marginLeft = '-100%';
     }
+
+    const openFileUploader = () => {
+        fileUpload.current.click();
+    }
+
+    const handleFileUpload = (e) => {
+        // handle if the user closes down the window without selecting file 
+
+        // get the file
+        let file = e.target.files[0];
+
+        // create the storage ref 
+        let storageRef = firebaseApp.storage().ref('whatsapp_group_icon/'+file.name);
+
+        // upload file
+        let task  = storageRef.put(file)
+        
+        // upload progress
+        task.on('state_changed',
+                function (params) {
+                    
+                },
+                function (error) {
+                    
+                },
+                function (){
+                    task.snapshot.ref.getDownloadURL().then(function(downloadURL) {
+                        // console.log('File available at', downloadURL);
+                        setGroupImage({
+                            ...groupImage,
+                            backgroundImage: `url(${downloadURL})`
+                        })
+                    });
+                }
+        )
+    }
     const open = Boolean(anchorEl);
     const id = open ? 'simple-popover' : undefined;
 
@@ -57,8 +102,8 @@ const Sidebar = () => {
                     <IconButton>
                         <ChatIcon />
                     </IconButton>
-                    <IconButton>
-                        <MoreVertIcon  onClick={handleClick} />
+                    <IconButton onClick={handleClick} >
+                        <MoreVertIcon />
                     </IconButton>
                     <StyledPopover
                         id={id}
@@ -98,15 +143,16 @@ const Sidebar = () => {
                     </div> 
                 </div>
                 <div className="sidebar__navigationHeaderIconWrapper">
-                    <div className="sidebar__navigationHeaderImageWrapper">
+                    <div className="sidebar__navigationHeaderImageWrapper" style={groupImage} onClick={openFileUploader} >
                         <AddAPhotoIcon />
                         <div> 
                             ADD GROUP ICON
                         </div>
                     </div>
+                    <input type="file"  style={{display:'none'}} ref={fileUpload}  onChange={(e)=> handleFileUpload(e)}/>
                 </div> 
                 <div className="sidebar__navigationInputWrapper" >
-                        <TextField  label="Standard" fullWidth={true} />
+                    <TextField  label="Standard" fullWidth={true} />
                 </div>
             </div>
         </div>
