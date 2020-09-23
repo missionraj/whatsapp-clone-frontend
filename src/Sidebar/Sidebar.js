@@ -12,8 +12,9 @@ import { withStyles } from '@material-ui/core/styles';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import AddAPhotoIcon from '@material-ui/icons/AddAPhoto';
 import TextField from '@material-ui/core/TextField';
-import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import firebaseApp from '../firebase';
+
+import { useDataLayerValue } from '../stateProvider';
 
 // The `withStyles()` higher-order component is injecting a `classes`
 // prop that is used by the `Button` component.
@@ -48,6 +49,9 @@ const Sidebar = () => {
     });
 
     const [ groupName, setGroupName ] = useState('');
+    const [ { user }, dispatch] = useDataLayerValue();
+
+    console.log('this is the user .....', user);
     const handleClick = (event) => {
       setAnchorEl(event.currentTarget);
     };
@@ -64,7 +68,7 @@ const Sidebar = () => {
     const closeNavigationGroupCreator = () => {
         creatGroupNav.current.style.marginLeft = '-100%';
     }
-
+    
     const openFileUploader = () => {
         fileUpload.current.click();
     }
@@ -111,7 +115,7 @@ const Sidebar = () => {
     return (
         <div className="sidebar">
             <div className="sidebar__header"> 
-                <Avatar src="https://celebhungry.com/wp-content/uploads/2019/12/Screenshot_2019-12-25-MOMOLAND-NANCY-on-Instagram-%E2%80%9C%F0%9F%92%AB-HQ-180713-%EB%AE%A4%EC%A7%81%EB%B1%85%ED%81%AC-%ED%87%B4%EA%B7%BC-_%C2%A9-AtMoonRiver-%EB%82%B8%EC%8B%9C-NANCY-MOMOLAND-%EB%AA%A8%EB%AA%A8%EB%9E%9C%EB%93%9C%E2%80%9D1.png" />
+                <Avatar src={user.profilePic} />
                 <div className="sidebar__headerRight">
                     <IconButton>
                         <DonutLargeIcon />
@@ -172,7 +176,11 @@ const Sidebar = () => {
                     <CssTextField  label="Group Subject" fullWidth={true}  onChange={(e)=>{handleGroupName(e)}} />
                 </div>
                 <div className="sidebar__navigationCreateGroupWrapper">
-                    <img src="https://freeiconshop.com/wp-content/uploads/edd/checkmark-flat.png" height="50" width="50"/>
+                    {
+                        groupName.length > 0 ? (
+                            <img src="https://freeiconshop.com/wp-content/uploads/edd/checkmark-flat.png" height="50" width="50"/>
+                        ) : null
+                    }
                 </div> 
             </div>
         </div>
