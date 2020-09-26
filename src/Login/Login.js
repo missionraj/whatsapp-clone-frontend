@@ -17,11 +17,12 @@ const Login = () => {
 
 
     const setUser = ( user ) => { 
-        const { username, email, profilePic } = user;
+        const { username, email, profilePic, _id } = user;
         const userData = { 
             name:username,
             email:email,
-            profilePic:profilePic
+            profilePic:profilePic,
+            id:_id
         }
         sessionStorage.setItem("user",JSON.stringify(userData))
         dispatch({

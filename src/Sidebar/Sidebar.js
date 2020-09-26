@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import './SideBar.css'
 import DonutLargeIcon from '@material-ui/icons/DonutLarge';
 import ChatIcon from '@material-ui/icons/Chat';
@@ -15,6 +15,7 @@ import TextField from '@material-ui/core/TextField';
 import firebaseApp from '../firebase';
 
 import { useDataLayerValue } from '../stateProvider';
+import axios from '../axios';
 
 // The `withStyles()` higher-order component is injecting a `classes`
 // prop that is used by the `Button` component.
@@ -47,22 +48,23 @@ const Sidebar = () => {
             backgroundPosition: 'center',
             backgroundSize: 'cover'
     });
-
+    const [ groupImageUrl, setGroupImageUrl ] = useState('');
     const [ groupName, setGroupName ] = useState('');
     const [ { user }, dispatch] = useDataLayerValue();
-
-    console.log('this is the user .....', user);
+    const [ chatRooms, setChatRooms ] = useState([]);
     const handleClick = (event) => {
-      setAnchorEl(event.currentTarget);
+        setAnchorEl(event.currentTarget);
     };
     
     const handleClose = () => {
       setAnchorEl(null);
     };
   
+    const open = Boolean(anchorEl);
+    const id = open ? 'simple-popover' : undefined;
     const navigationGroupCreator = () => {
         creatGroupNav.current.style.marginLeft = 0;
-        setAnchorEl(null);
+        handleClose();
     }
 
     const closeNavigationGroupCreator = () => {
@@ -96,6 +98,7 @@ const Sidebar = () => {
                 function (){
                     task.snapshot.ref.getDownloadURL().then(function(downloadURL) {
                         // console.log('File available at', downloadURL);
+                        setGroupImageUrl(downloadURL);
                         setGroupImage({
                             ...groupImage,
                             backgroundImage: `url(${downloadURL})`
@@ -105,13 +108,39 @@ const Sidebar = () => {
         )
     }
 
+    const getRooms = () => { 
+        axios.get('/api/getRooms').then(res=> { 
+            console.log('this the get rooms response ... ', res);
+            if (res.data.success) {
+                setChatRooms(res.data.rooms)
+            }
+        })
+    }
     const handleGroupName = (e)=> { 
         // console.log('this is called when event target ....',e.target.value);
         setGroupName(e.target.value);
     }
-    const open = Boolean(anchorEl);
-    const id = open ? 'simple-popover' : undefined;
 
+    const createGroup = () => { 
+        const data = { 
+            "name":groupName,
+            "groupImage": groupImageUrl,
+            "created_by": user.id
+        }
+        axios.post('/api/newgroup',data).then(res => {
+            console.log('this is the response ...', res);
+            if (res.data.success) {
+                console.log('this is the response of the new group....', res);
+                closeNavigationGroupCreator();
+                getRooms();
+            }
+        })
+
+    }
+
+    useEffect(()=>{
+        getRooms();
+    },[])
     return (
         <div className="sidebar">
             <div className="sidebar__header"> 
@@ -123,7 +152,7 @@ const Sidebar = () => {
                     <IconButton>
                         <ChatIcon />
                     </IconButton>
-                    <IconButton onClick={handleClick} >
+                    <IconButton onClick={e=>handleClick(e)}>
                         <MoreVertIcon />
                     </IconButton>
                     <StyledPopover
@@ -152,9 +181,9 @@ const Sidebar = () => {
                 </div>
             </div>
             <div className="sidebar__chats">
-                <SideBarChat />
-                <SideBarChat />
-                <SideBarChat />
+                {
+                    chatRooms.map(el => (<SideBarChat key={el._id} room={el} />))
+                }
             </div>
             <div className="sidebar__navigation" ref={creatGroupNav} >
                 <div className="sidebar__navigationHeader"> 
@@ -178,7 +207,7 @@ const Sidebar = () => {
                 <div className="sidebar__navigationCreateGroupWrapper">
                     {
                         groupName.length > 0 ? (
-                            <img src="https://freeiconshop.com/wp-content/uploads/edd/checkmark-flat.png" height="50" width="50"/>
+                            <img src="https://freeiconshop.com/wp-content/uploads/edd/checkmark-flat.png" height="50" width="50" onClick={createGroup}/>
                         ) : null
                     }
                 </div> 
