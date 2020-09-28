@@ -1,8 +1,10 @@
 export const initialState = { 
-    user:null
+    user:null,
+    activeRoom:''
 }
 export const actionTypes = {
-    SET_USER:'SET_USER'
+    SET_USER:'SET_USER',
+    SET_ACTIVE_ROOM: 'SET_ACTIVE_ROOM'
 }
 
 const reducer = (state, action)=> { 
@@ -11,6 +13,11 @@ const reducer = (state, action)=> {
             return { 
                 ...state,
                 user:action.user
+            }
+        case actionTypes.SET_ACTIVE_ROOM : 
+            return {
+                ...state,
+                activeRoom:action.roomId
             }
     }
 }

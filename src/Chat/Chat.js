@@ -8,8 +8,12 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import MicIcon from '@material-ui/icons/Mic';
 
 import axios from '../axios';
+import { useDataLayerValue } from '../stateProvider';
+
 const Chat = ({messages}) => {
     const [ input, setInput] = useState("");
+
+    const [{activeRoom}] = useDataLayerValue();
     const sendMessage = async (e)=>{
         e.preventDefault();
         await axios.post('/api/messages/new',{
@@ -21,6 +25,7 @@ const Chat = ({messages}) => {
         )
         setInput("");
     }
+    console.log('this is the active room ...', activeRoom);
     return (
         <>
         <div className="chat">

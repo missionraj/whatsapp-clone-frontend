@@ -11,7 +11,9 @@ const ChatContainer = props => {
     
     useEffect(()=>{
         axios.get('/api/message/sync').then(response => {
-          setMessages(response.data);
+            if (response.data.success) {
+                setMessages(response.data.messages);
+            } 
         })
     },[]);
 

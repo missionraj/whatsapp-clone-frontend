@@ -7,6 +7,9 @@ import SearchIcon from '@material-ui/icons/Search';
 import { IconButton, Avatar } from '@material-ui/core';
 import SideBarChat from '../SideBarChat/SideBarChat';
 
+import Snackbar from '@material-ui/core/Snackbar';
+import CloseIcon from '@material-ui/icons/Close';
+
 import Popover from '@material-ui/core/Popover';
 import { withStyles } from '@material-ui/core/styles';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
@@ -15,6 +18,7 @@ import TextField from '@material-ui/core/TextField';
 import firebaseApp from '../firebase';
 
 import { useDataLayerValue } from '../stateProvider';
+import { actionTypes } from '../reducer';
 import axios from '../axios';
 
 // The `withStyles()` higher-order component is injecting a `classes`
@@ -52,6 +56,21 @@ const Sidebar = () => {
     const [ groupName, setGroupName ] = useState('');
     const [ { user }, dispatch] = useDataLayerValue();
     const [ chatRooms, setChatRooms ] = useState([]);
+    const [ openSnackBar, setOpenSnackBar ] = useState(false);
+    
+
+    const handleClickSnackBar = () => {
+        setOpenSnackBar(true);
+    };
+
+    const handleCloseSnackBar = (event, reason) => {
+        if (reason === 'clickaway') {
+        return;
+        }
+        setOpenSnackBar(false);
+    };
+
+
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
     };
@@ -107,12 +126,17 @@ const Sidebar = () => {
                 }
         )
     }
-
+    const setRoomId = (room) => {
+        dispatch({
+            type:actionTypes.SET_ACTIVE_ROOM,
+            roomId:room._id
+        })
+    }
     const getRooms = () => { 
         axios.get('/api/getRooms').then(res=> { 
-            console.log('this the get rooms response ... ', res);
             if (res.data.success) {
-                setChatRooms(res.data.rooms)
+                setChatRooms(res.data.rooms);
+                setRoomId(res.data.rooms[0]);
             }
         })
     }
@@ -128,11 +152,12 @@ const Sidebar = () => {
             "created_by": user.id
         }
         axios.post('/api/newgroup',data).then(res => {
-            console.log('this is the response ...', res);
+            console.log('response of the new group', res);
             if (res.data.success) {
-                console.log('this is the response of the new group....', res);
                 closeNavigationGroupCreator();
                 getRooms();
+            } else { 
+                handleClickSnackBar();
             }
         })
 
@@ -212,6 +237,23 @@ const Sidebar = () => {
                     }
                 </div> 
             </div>
+            <Snackbar
+                anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'left',
+                }}
+                open={openSnackBar}
+                autoHideDuration={6000}
+                onClose={handleCloseSnackBar}
+                message="Oops something went wrong !!!"
+                action={
+                <React.Fragment>
+                    <IconButton size="small" aria-label="close" color="inherit" onClick={handleCloseSnackBar}>
+                        <CloseIcon fontSize="small" />
+                    </IconButton>
+                </React.Fragment>
+                }
+            />
         </div>
     )
 }
