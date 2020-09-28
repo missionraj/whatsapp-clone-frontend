@@ -12,20 +12,20 @@ import { useDataLayerValue } from '../stateProvider';
 
 const Chat = ({messages}) => {
     const [ input, setInput] = useState("");
+    const [{ user, activeRoom}] = useDataLayerValue();
 
-    const [{activeRoom}] = useDataLayerValue();
     const sendMessage = async (e)=>{
         e.preventDefault();
         await axios.post('/api/messages/new',{
                 "message":input,
-                "name":"raj",
-                "timestamp":"9:30 am",
-                "recieved" : "true"
+                "user":user.id,
+                "name":user.name,
+                "room":activeRoom
             }
         )
         setInput("");
     }
-    console.log('this is the active room ...', activeRoom);
+
     return (
         <>
         <div className="chat">
@@ -48,7 +48,7 @@ const Chat = ({messages}) => {
             <div className="chat__body">
                 {
                     messages.map(message=>(
-                        <p className={`chat__message ${message.recieved ? 'chat__reciever' : '' }`} key={message._id}>
+                        <p className={`chat__message ${message.user === user.id ? 'chat__reciever' : '' }`} key={message._id}>
                             <span className="chat__name"> {message.name} </span>
                                 { message.message }
                             <span className="chat__timeStamp"> 
