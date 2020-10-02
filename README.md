@@ -70,4 +70,6 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/tr
 
 ### project link given bellow
 
-<a href="https://im5.ezgif.com/tmp/ezgif-5-991031261898.gif" title="whatsapp clone"/>
+<a href="https://im5.ezgif.com/tmp/ezgif-5-991031261898.gif" title="whatsapp clone"> </a>
+
+<div style="width:360px;max-width:100%;"><div style="height:0;padding-bottom:56.11%;position:relative;"><iframe width="360" height="202" style="position:absolute;top:0;left:0;width:100%;height:100%;" frameBorder="0" src="https://im5.ezgif.com/tmp/ezgif-5-991031261898.gif"></iframe></div><p><a href="https://im5.ezgif.com/tmp/ezgif-5-991031261898.gif"></a></p></div>
