@@ -49,11 +49,23 @@
 .sidebar__chats {
     flex: 1;
     background-color: #fff;
-    overflow: scroll;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    scrollbar-color: rgba(0,0,0,.2) hsla(0,0%,100%,.1);
+    scrollbar-width: thin;
 }
+
 .sidebar__chats::-webkit-scrollbar {
-    display: none;
+    width: 6px !important;
+    height: 6px !important;
 }
+.sidebar__chats::-webkit-scrollbar-thumb {
+    background-color: rgb(72 39 39 / 20%);
+}
+.sidebar__chats::-webkit-scrollbar-track{
+    background: hsla(0,0%,100%,.1);
+}
+
 .sidebar__headerRightOptions {
     padding: 10px;  
     cursor: pointer;

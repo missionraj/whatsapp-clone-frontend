@@ -19,11 +19,22 @@
     background-repeat: repeat;
     background-position: center;
     padding: 30px;
-    overflow: scroll;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    scrollbar-color: rgba(0,0,0,.2) hsla(0,0%,100%,.1);
+    scrollbar-width: thin;
 }
 .chat__body::-webkit-scrollbar {
-    display: none;
+    width: 6px !important;
+    height: 6px !important;
 }
+.chat__body::-webkit-scrollbar-thumb {
+    background-color: rgb(72 39 39 / 20%);
+}
+.chat__body::-webkit-scrollbar-track{
+    background: hsla(0,0%,100%,.1);
+}
+
 .chat__message{ 
     position: relative;
     font-size: 16px;

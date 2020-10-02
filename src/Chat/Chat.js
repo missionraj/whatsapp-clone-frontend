@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import './Chat.css'
 import { IconButton ,Avatar } from '@material-ui/core'
 import SearchOutlinedIcon from '@material-ui/icons/SearchOutlined';
@@ -12,28 +12,45 @@ import { useDataLayerValue } from '../stateProvider';
 
 const Chat = ({messages}) => {
     const [ input, setInput] = useState("");
-    const [{ user, activeRoom}] = useDataLayerValue();
+    const [{ user, activeRoom }] = useDataLayerValue();
+    const chatRef = useRef(null);
 
-    const sendMessage = async (e)=>{
+    const sendMessage = (e)=>{
         e.preventDefault();
-        await axios.post('/api/messages/new',{
+        axios.post('/api/messages/new',{
                 "message":input,
                 "user":user.id,
                 "name":user.name,
-                "room":activeRoom
+                "room":activeRoom,
+                "timestamp":new Date().toDateString()
             }
-        )
+        ).then(res=> { 
+            if(res.data.success){
+                scrollToBottom();
+            }
+        })
         setInput("");
     }
 
+    const scrollToBottom = () => {  
+        chatRef.current.scrollTo({
+            top: chatRef.current.scrollHeight,
+            left: 0,
+            behavior: 'smooth'
+          }); 
+    };
+
+    console.log('this is the active room ...', activeRoom);
+    useEffect(() => {
+        scrollToBottom();
+    },[]);    
     return (
         <>
         <div className="chat">
             <div className="chat__header">
-                <Avatar />
+                <Avatar src={activeRoom?.groupImage} />
                 <div className="chat__headerInfo"> 
-                    <h3> Room name  </h3>
-                    <p> last seen at ..... </p>
+                    <h3> {activeRoom?.name}  </h3>
                 </div>
                 <div className="chat__headerRight">
                     <IconButton>
@@ -45,7 +62,7 @@ const Chat = ({messages}) => {
                 </div>
             
             </div> 
-            <div className="chat__body">
+            <div className="chat__body" ref={chatRef} style={{ overflowY: "scroll" }} >
                 {
                     messages.map(message=>(
                         <p className={`chat__message ${message.user === user.id ? 'chat__reciever' : '' }`} key={message._id}>
@@ -57,6 +74,7 @@ const Chat = ({messages}) => {
                         </p>
                     ))
                 }
+
             </div> 
             <div className="chat__footer">
                 <InsertEmoticonIcon />

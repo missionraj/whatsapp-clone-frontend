@@ -129,7 +129,7 @@ const Sidebar = () => {
     const setRoomId = (room) => {
         dispatch({
             type:actionTypes.SET_ACTIVE_ROOM,
-            roomId:room._id
+            room:room
         })
     }
     const getRooms = () => { 
@@ -149,10 +149,10 @@ const Sidebar = () => {
         const data = { 
             "name":groupName,
             "groupImage": groupImageUrl,
-            "created_by": user.id
+            "created_by": user.id,
+            "created_at": new Date().toDateString()
         }
         axios.post('/api/newgroup',data).then(res => {
-            console.log('response of the new group', res);
             if (res.data.success) {
                 closeNavigationGroupCreator();
                 getRooms();
@@ -163,9 +163,18 @@ const Sidebar = () => {
 
     }
 
+    const handleLogOut = () => { 
+        dispatch({
+            type:actionTypes.SET_USER,
+            user:null
+        });
+        sessionStorage.removeItem("user");
+    }
     useEffect(()=>{
         getRooms();
-    },[])
+    },[]);
+
+
     return (
         <div className="sidebar">
             <div className="sidebar__header"> 
@@ -195,7 +204,7 @@ const Sidebar = () => {
                         }}
                     >
                        <div className="sidebar__headerRightOptions" onClick={navigationGroupCreator} > create a group </div>
-                       <div className="sidebar__headerRightOptions"> Logout </div>
+                       <div className="sidebar__headerRightOptions" onClick={handleLogOut}> Logout </div>
                     </StyledPopover>
                 </div>
             </div>
@@ -207,7 +216,7 @@ const Sidebar = () => {
             </div>
             <div className="sidebar__chats">
                 {
-                    chatRooms.map(el => (<SideBarChat key={el._id} room={el} />))
+                    chatRooms.map(el => (<SideBarChat key={el._id} room={el} setRoom={setRoomId} />))
                 }
             </div>
             <div className="sidebar__navigation" ref={creatGroupNav} >
