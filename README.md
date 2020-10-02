@@ -11,7 +11,7 @@ this is small try to copy whatsapp desktop ui with realtime chat functionality a
 
 ### technologies used
 
-* React, ReactContextApi, Node.js, Express.js, Mongodb , Html ,css , Firebase 
+* React, ReactContextApi, Node.js, Express.js, Pusherjs, Mongodb , Html ,css , Firebase 
 
 
 ### project link given below
